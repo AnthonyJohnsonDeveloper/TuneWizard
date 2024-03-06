@@ -1,0 +1,31 @@
+{
+  "name": "TuneWizard",
+  "version": "1.0.0",
+  "description": "A car tuning companion app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "A.Johnson",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.2.3",
+    "electron-builder": ""
+  },
+  "build": {
+    "appId": "com.mii5tik.TuneWizard",
+    "productName": "TuneWizard",
+    "icon": "icon/TuneWizard",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "dependencies": {
+    "pg": "^8.11.3"
+  }
+}

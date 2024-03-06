@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel Base Settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+        <!-- Back Button -->
+        <button id="back-button">Back</button>
+
+    <h1>Wheel Base Settings These are just to get you started please fine tune to your driving style</h1>
+
+    <label for="wheel-base-dropdown">Select Wheel Base:</label>
+    <select id="wheel-base-dropdown">
+        <option value="simagic-alpha-mini">Simagic Alpha Mini</option>
+        <option value="moza-r9">Moza R9</option>
+        <option value="moza-r5">Moza R5</option>
+        <option value="thrustmaster-t300">Thrustmaster T300</option>
+        <option value="logitech-g29/920/923">Logitech G29/920/923</option>
+        <!-- Add other wheel bases as options -->
+    </select>
+
+    <div id="settings-container">
+        <!-- Settings for the selected wheel base will be displayed here -->
+    <h3>Simagic Alpha Mini Settings </h3>
+    <p>Forcefeedback: 85%</p>
+    <p>Smoothness: 2</p>
+    <h3>Vehicle</h3>
+    <p>Wheel Rotation Speed: 38</p>
+    <p>Feedback Detail: 8</p>
+    <h3>Mechanical</h3>
+    <p>Max torque: 8.0N-m</p>
+    <p>Mechanical damper: 22%</p>
+    <p>Mechanical Friction: 20%</p>
+    <p>Mechanical inertia: 0</p>
+    <p>Feedback Frequency: 0</p>
+    <h3>Steer Settings</h3>
+    <p>Angle: 900°</p>
+    <p>HardLock angle: 900°</p>
+    <p>Limit Strength: soft</p>
+
+</div>
+<script>
+    // Attach event listener to the dropdown element
+    document.getElementById("wheel-base-dropdown").addEventListener("change", function() {
+        // Get the selected value from the dropdown
+        const selectedBase = this.value;
+        // Call the displaySettings function with the selected base
+        displaySettings(selectedBase);
+    });
+    document.getElementById("back-button").addEventListener("click", function() {
+   window.history.back(); // Navigate back to the previous page
+});
+</script>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

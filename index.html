@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuneWizard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+        <!-- Back Button -->
+        <button id="back-button">Back</button>
+
+    <h1>Welcome to TuneWizard</h1>
+    <p>Please carefully read the description of what each section is tuning and then take and tweak the tune that's given to you to your liking and driving stytle.</p>
+    <form id="tuningForm">
+        <label for="weight">Weight:</label>
+        <input type="text" id="weight" name="weight"><br><br>
+        <label for="hp">Horsepower:</label>
+        <input type="text" id="hp" name="hp"><br><br>
+        <label for="frontTireSize">Front Tire Size:</label>
+        <input type="text" id="frontTireSize" name="frontTireSize"><br><br>
+        <label for="rearTireSize">Rear Tire Size:</label>
+        <input type="text" id="rearTireSize" name="rearTireSize"><br><br>
+
+        <input type="checkbox" id="drifting" name="drifting">
+        <label for="drifting">Drifting</label><br><br>
+        <input type="checkbox" id="racing" name="racing">
+        <label for="racing">Racing</label><br><br>
+        <label for="tire-type">Select your tire type:</label>
+        <select id="tire-type">
+            <option value="drift">Drift Tires</option>
+            <option value="racing">Race Tires</option>
+            <!-- Add more options for other tire types --> 
+            </select>
+        <button type="submit">Get Tune</button>
+    </form>
+
+    <div id="output">
+        <!-- Output will be displayed here -->
+    </div>
+    <button onclick="openVRPage()">VR Settings</button>
+    <button onclick="openContentManagerSettings()">Content Manager Settings</button>
+<script>
+    function openContentManagerSettings() {
+    window.location.href = "contentmanager.html";
+}
+
+    function openVRPage() {
+        window.location.href = "vr.html";
+    }
+    document.getElementById("back-button").addEventListener("click", function() {
+   window.history.back(); // Navigate back to the previous page
+});
+</script>
+
+<button onclick="openWheelBaseSettings()">Wheel Base Settings</button>
+
+
+    <script src="renderer.js"></script>
+</body>
+</html>
