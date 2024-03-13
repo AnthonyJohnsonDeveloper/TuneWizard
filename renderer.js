@@ -87,45 +87,68 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
    // Define the car packs
    const CAR_PACK_VDC = 'VDC';
    const CAR_PACK_ADL_ELITE = 'ADL Elite';
+   const CAR_PACK_DCGP = 'DCGP';
 
    // Define tune parameters for each car pack
    const carPackTunes = {
-       [CAR_PACK_VDC]: {
-           // Define tune parameters for VDC car pack
-           // Example:
-           weight: { min: 1152, max: 1321 },
-           hp: { min: 926, max: 1303 },
-           frontTireSize: { min: 245, max: 305 },
-           rearTireSize: { min: 245, max: 305 },
-           // Add more parameters as needed
-       },
-       [CAR_PACK_ADL_ELITE]: {
-           // Define tune parameters for ADL Elite car pack
-           // Example:
-           weight: { min: 1322, max: 1490 },
-           hp: { min: 1304, max: 1481 },
-           frontTireSize: { min: 285, max: 345 },
-           rearTireSize: { min: 285, max: 345 },
-           // Add more parameters as needed
-       },
-       // Add more car packs as needed
-   };
+      [CAR_PACK_VDC]: {
+          // Define tune parameters for VDC car pack
+          // Example:
+          weight: { min: 1152, max: 1321 },
+          hp: { min: 926, max: 1303 },
+          frontTireSize: { min: 245, max: 305 },
+          rearTireSize: { min: 245, max: 305 },
+          // Add more parameters as needed
+      },
+      [CAR_PACK_ADL_ELITE]: {
+          // Define tune parameters for ADL Elite car pack
+          // Example:
+          weight: { values: [939, 977, 978, 981, 989, 996, 1011, 1016, 1020, 1084, 1087, 1090] },
+          hp: { values: [869, 873, 877, 878, 939, 977, 978, 981, 989, 996, 1011, 1016, 1020, 1084, 1087, 1090] },
+          frontTireSize: { values: [245, 265] },
+          rearTireSize: { values: [265, 285, 305] },
+          // Add more parameters as needed
+      },
+      // Add more car packs as needed
+      [CAR_PACK_DCGP]: {
+        weight: { min: 1280, max : 1360},
+        hp: { min: 800, max :800},
+        frontTireSize: { min: 235, max: 235 },
+        rearTireSize: { min: 295, max: 295 },
+      }
+  };
 
    // Check if conditions match any car pack
    let carPack = 'default';
    let carPackMessage = '';
 
    if (drifting) {
-       carPack = checkVDC(weight, hp, frontTireSize, rearTireSize, carPackTunes);
-       if (carPack === 'default') {
-           carPack = checkADLElite(weight, hp, frontTireSize, rearTireSize, carPackTunes);
-       }
-   }
+      carPack = checkVDC(weight, hp, frontTireSize, rearTireSize, carPackTunes);
+      if (carPack === 'default') {
+          carPack = checkADLElite(weight, hp, frontTireSize, rearTireSize, carPackTunes);
+          if (carPack === 'default') {
+              carPack = checkDCGP(weight, hp, frontTireSize, rearTireSize, carPackTunes);
+          }
+      }
+  }
+  if (carPack === CAR_PACK_VDC) {
+   carPackMessage = 'VDC';
+} else if (carPack === CAR_PACK_ADL_ELITE) {
+   carPackMessage = 'ADL ELITE';
+} else if (carPack === CAR_PACK_DCGP) {
+   carPackMessage = 'DCGP';
+} else {
+   carPackMessage = 'Default Tune';
+}
 
    // Generate random tune based on selected car pack
    const mode = drifting ? 'drifting' : 'racing';
+   const randomTune = generateRandomTune(mode);
 
+   // Call the displayTune function
+   displayTune(randomTune, carPackMessage);
 });
+
 
 // Function to check VDC car pack conditions
 function checkVDC(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
@@ -145,16 +168,31 @@ function checkVDC(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
 
 // Function to check ADL Elite car pack conditions
 function checkADLElite(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
-   const { weight: { min: minWeightADL, max: maxWeightADL }, 
-           hp: { min: minHpADL, max: maxHpADL }, 
-           frontTireSize: { min: minFrontTireSizeADL, max: maxFrontTireSizeADL }, 
-           rearTireSize: { min: minRearTireSizeADL, max: maxRearTireSizeADL } } = carPackTunes['ADL Elite'];
+   const { weight: { values: weightValues }, 
+           hp: { values: hpValues }, 
+           frontTireSize: { values: frontTireSizeValues }, 
+           rearTireSize: { values: rearTireSizeValues } } = carPackTunes['ADL Elite'];
 
-   if (weight >= minWeightADL && weight <= maxWeightADL &&
-       hp >= minHpADL && hp <= maxHpADL &&
-       frontTireSize >= minFrontTireSizeADL && frontTireSize <= maxFrontTireSizeADL &&
-       rearTireSize >= minRearTireSizeADL && rearTireSize <= maxRearTireSizeADL) {
+   if (weightValues.includes(weight) &&
+       hpValues.includes(hp) &&
+       frontTireSizeValues.includes(frontTireSize) &&
+       rearTireSizeValues.includes(rearTireSize)) {
        return 'ADL Elite';
+   }
+   return 'default';
+}
+
+function checkDCGP(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
+   const { weight: { min: minWeightDCGP, max: maxWeightDCGP }, 
+           hp: { min: minHpDCGP, max: maxHpDCGP }, 
+           frontTireSize: { min: minFrontTireSizeDCGP, max: maxFrontTireSizeDCGP }, 
+           rearTireSize: { min: minRearTireSizeDCGP, max: maxRearTireSizeDCGP } } = carPackTunes['DCGP'];
+
+   if (weight >= minWeightDCGP && weight <= maxWeightDCGP &&
+       hp >= minHpDCGP && hp <= maxHpDCGP &&
+       frontTireSize >= minFrontTireSizeDCGP && frontTireSize <= maxFrontTireSizeDCGP &&
+       rearTireSize >= minRearTireSizeDCGP && rearTireSize <= maxRearTireSizeDCGP) {
+       return 'DCGP';
    }
    return 'default';
 }
