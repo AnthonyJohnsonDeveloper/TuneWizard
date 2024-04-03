@@ -94,10 +94,10 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
       [CAR_PACK_VDC]: {
           // Define tune parameters for VDC car pack
           // Example:
-          weight: { min: 1152, max: 1321 },
-          hp: { min: 926, max: 1303 },
-          frontTireSize: { min: 245, max: 305 },
-          rearTireSize: { min: 245, max: 305 },
+          weight: { values: [1126, 1152, 1154, 1193, 1194, 1200, 1203, 1203, 1224, 1274, 1278, 1286, 1289, 1318, 1321] },
+          hp: { values: [926, 1007, 1066, 1067, 1087, 1094, 1095, 1100, 1114, 1147, 1149, 1303] },
+          frontTireSize: { values: [235, 245, 265, 275, 285, 305] },
+          rearTireSize: { values: [235, 245, 265, 275, 285, 305] },
           // Add more parameters as needed
       },
       [CAR_PACK_ADL_ELITE]: {
@@ -111,10 +111,10 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
       },
       // Add more car packs as needed
       [CAR_PACK_DCGP]: {
-        weight: { min: 1280, max : 1360},
-        hp: { min: 800, max :800},
-        frontTireSize: { min: 235, max: 235 },
-        rearTireSize: { min: 295, max: 295 },
+        weight: { values: [1280, 1290, 1310, 1320, 1330, 1350, 1360, 1390, 1395] },
+        hp: { values: [800] },
+        frontTireSize: { values: [235] },
+        rearTireSize: { values: [295] },
       }
   };
 
@@ -134,7 +134,7 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
   if (carPack === CAR_PACK_VDC) {
    carPackMessage = 'VDC';
 } else if (carPack === CAR_PACK_ADL_ELITE) {
-   carPackMessage = 'ADL ELITE';
+   carPackMessage = 'ADL Elite';
 } else if (carPack === CAR_PACK_DCGP) {
    carPackMessage = 'DCGP';
 } else {
@@ -149,18 +149,17 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
    displayTune(randomTune, carPackMessage);
 });
 
-
 // Function to check VDC car pack conditions
 function checkVDC(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
-   const { weight: { min: minWeightVDC, max: maxWeightVDC }, 
-           hp: { min: minHpVDC, max: maxHpVDC }, 
-           frontTireSize: { min: minFrontTireSizeVDC, max: maxFrontTireSizeVDC }, 
-           rearTireSize: { min: minRearTireSizeVDC, max: maxRearTireSizeVDC } } = carPackTunes.VDC;
+   const { weight: { values: weightValues }, 
+           hp: { values: hpValues }, 
+           frontTireSize: { values: frontTireSizeValues }, 
+           rearTireSize: { values: rearTireSizeValues } } = carPackTunes.VDC;
 
-   if (weight >= minWeightVDC && weight <= maxWeightVDC &&
-       hp >= minHpVDC && hp <= maxHpVDC &&
-       frontTireSize >= minFrontTireSizeVDC && frontTireSize <= maxFrontTireSizeVDC &&
-       rearTireSize >= minRearTireSizeVDC && rearTireSize <= maxRearTireSizeVDC) {
+   if (weightValues.includes(weight) &&
+       hpValues.includes(hp) &&
+       frontTireSizeValues.includes(frontTireSize) &&
+       rearTireSizeValues.includes(rearTireSize)) {
        return 'VDC';
    }
    return 'default';
@@ -183,19 +182,20 @@ function checkADLElite(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
 }
 
 function checkDCGP(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
-   const { weight: { min: minWeightDCGP, max: maxWeightDCGP }, 
-           hp: { min: minHpDCGP, max: maxHpDCGP }, 
-           frontTireSize: { min: minFrontTireSizeDCGP, max: maxFrontTireSizeDCGP }, 
-           rearTireSize: { min: minRearTireSizeDCGP, max: maxRearTireSizeDCGP } } = carPackTunes['DCGP'];
+   const { weight: { values: weightValues }, 
+           hp: { values: hpValues }, 
+           frontTireSize: { values: frontTireSizeValues }, 
+           rearTireSize: { values: rearTireSizeValues } } = carPackTunes['DCGP'];
 
-   if (weight >= minWeightDCGP && weight <= maxWeightDCGP &&
-       hp >= minHpDCGP && hp <= maxHpDCGP &&
-       frontTireSize >= minFrontTireSizeDCGP && frontTireSize <= maxFrontTireSizeDCGP &&
-       rearTireSize >= minRearTireSizeDCGP && rearTireSize <= maxRearTireSizeDCGP) {
+   if (weightValues.includes(weight) &&
+       hpValues.includes(hp) &&
+       frontTireSizeValues.includes(frontTireSize) &&
+       rearTireSizeValues.includes(rearTireSize)) {
        return 'DCGP';
    }
    return 'default';
 }
+
 
 
 
