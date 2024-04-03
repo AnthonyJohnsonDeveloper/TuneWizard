@@ -88,6 +88,8 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
    const CAR_PACK_VDC = 'VDC';
    const CAR_PACK_ADL_ELITE = 'ADL Elite';
    const CAR_PACK_DCGP = 'DCGP';
+   const CAR_PACK_SHADOWREALMPA = 'SRDL ProAm';
+   const CAR_PACK_ADL_STREET = 'ADL Street';
 
    // Define tune parameters for each car pack
    const carPackTunes = {
@@ -115,6 +117,19 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
         hp: { values: [800] },
         frontTireSize: { values: [235] },
         rearTireSize: { values: [295] },
+      },
+      [CAR_PACK_SHADOWREALMPA]: {
+         weight: { values: [1240, 1250, 1260, 1270, 1280, 1300, 1305, 1309, 1350]},
+         hp: { values: [560, 562, 590, 627, 635, 644, 645, 655, 656]},
+         frontTireSize: { values: [245]},
+         rearTireSize: { values: [255]},
+
+      },
+      [CAR_PACK_ADL_STREET]: {
+         weight: { values: [1085, 1100, 1150, 1163, 1210, 1290, 1360, 1414, 1680]},
+         hp: { values: [405, 490, 515, 516, 516]},
+         frontTireSize: { values: [235]},
+         rearTireSize: { values: [245]},
       }
   };
 
@@ -128,18 +143,29 @@ document.getElementById('tuningForm').addEventListener('submit', function (event
           carPack = checkADLElite(weight, hp, frontTireSize, rearTireSize, carPackTunes);
           if (carPack === 'default') {
               carPack = checkDCGP(weight, hp, frontTireSize, rearTireSize, carPackTunes);
+              if (carPack === 'default') {
+                  carPack = checkShadowRealmPA(weight, hp, frontTireSize, rearTireSize, carPackTunes);
+                  if (carPack === 'default') { // Check ADL Street Pack if all others fail
+                      carPack = checkADLStreet(weight, hp, frontTireSize, rearTireSize, carPackTunes);
+                  }
+              }
           }
       }
   }
+  
   if (carPack === CAR_PACK_VDC) {
-   carPackMessage = 'VDC';
-} else if (carPack === CAR_PACK_ADL_ELITE) {
-   carPackMessage = 'ADL Elite';
-} else if (carPack === CAR_PACK_DCGP) {
-   carPackMessage = 'DCGP';
-} else {
-   carPackMessage = 'Default Tune';
-}
+      carPackMessage = 'VDC';
+  } else if (carPack === CAR_PACK_ADL_ELITE) {
+      carPackMessage = 'ADL Elite';
+  } else if (carPack === CAR_PACK_DCGP) {
+      carPackMessage = 'DCGP';
+  } else if (carPack === CAR_PACK_SHADOWREALMPA) {
+      carPackMessage = 'SRDL ProAm';
+  } else if (carPack === CAR_PACK_ADL_STREET) { // New condition for ADL Street Pack
+      carPackMessage = 'ADL Street';
+  } else {
+      carPackMessage = 'Default Tune';
+  }
 
    // Generate random tune based on selected car pack
    const mode = drifting ? 'drifting' : 'racing';
@@ -196,7 +222,35 @@ function checkDCGP(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
    return 'default';
 }
 
+function checkShadowRealmPA(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
+   const { weight: { values: weightValues },
+       hp: { values: hpValues },
+       frontTireSize: { values: frontTireSizeValues },
+       rearTireSize: { values: rearTireSizeValues } } = carPackTunes["SRDL ProAm"];
 
+   if (weightValues.includes(weight) &&
+       hpValues.includes(hp) &&
+       frontTireSizeValues.includes(frontTireSize) &&
+       rearTireSizeValues.includes(rearTireSize)) {
+       return "SRDL ProAm";
+   }
+   return 'default';
+}
+
+function checkADLStreet(weight, hp, frontTireSize, rearTireSize, carPackTunes) {
+   const { weight: { values: weightValues },
+       hp: { values: hpValues },
+       frontTireSize: { values: frontTireSizeValues },
+       rearTireSize: { values: rearTireSizeValues } } = carPackTunes["ADL Street"];
+
+   if (weightValues.includes(weight) &&
+       hpValues.includes(hp) &&
+       frontTireSizeValues.includes(frontTireSize) &&
+       rearTireSizeValues.includes(rearTireSize)) {
+       return "ADL Street";
+   }
+   return 'default';
+}
 
 
 
@@ -217,8 +271,12 @@ function displayTune(randomTune, carPackMessage) {
    outputDiv.innerHTML += `<p>Rear Camber: ${randomTune.rearCamber.toFixed(2)}</p>`;
    outputDiv.innerHTML += `<p>Front Ride Height: ${randomTune.frontrideheight.toFixed(2)}</p>`;
    outputDiv.innerHTML += `<p>Rear Ride Height: ${randomTune.rearrideheight.toFixed(2)}</p>`;
-   outputDiv.innerHTML += `<p>Front Toe: ${Math.abs(randomTune.frontToe).toFixed(2)} ${randomTune.frontToe < 0 ? 'Toe Out' : 'Toe In'}</p>`;
-   outputDiv.innerHTML += `<p>Rear Toe: ${Math.abs(randomTune.rearToe).toFixed(2)} ${randomTune.rearToe < 0 ? 'Toe Out' : 'Toe In'}</p>`;
+   outputDiv.innerHTML += `<p>Front Toe: ${Math.abs(randomTune.frontToe).toFixed(2)} ${randomTune.frontToe < 0 ? 'Toe Out' : 'Toe In'} "Toe out in the front:
+   Faster turn in, slower midcorner on some tires, more unstable braking, more heat, looser more inaccurate steering.
+   Toe in, in the front: Slower turn in compared to rear end of car, tighter and more accurate steering, stable braking, more heat. As above, I set toe based on toe value when braking. I never want positive toe when braking hard, but I do want negative. I don't want excess negative either because it will cause oversteer that is unwanted.
+   Depending on geometry, bumpsteer either increase toe out, or toe in. Bumpsteer does not always increase toe out."</p>`;
+   outputDiv.innerHTML += `<p>Rear Toe: ${Math.abs(randomTune.rearToe).toFixed(2)} ${randomTune.rearToe < 0 ? 'Toe Out' : 'Toe In'} "Toe out in the rear: Avoid. Unstable car, not even good for drifting. All kinds of problems cause the rear end turns in far faster than the front.
+   Toe in, in the rear: Set a bit. Allows the car to corner at a higher speed and not oversteer if it's otherwise neutral, increases heat, slower turn in but more controlled, more controlled braking. Car does not want to change direction mid slide so easily, especially during understeer."</p>`;
 }
 
 
