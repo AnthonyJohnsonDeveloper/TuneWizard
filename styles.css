@@ -1,6 +1,6 @@
 /* Add your CSS styles here */
 body {
-  background-color: #5e0505b0;
+  background-color: #fcae06cb;
   font-family: Arial, sans-serif;
 }
 
@@ -72,4 +72,70 @@ footer {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+
+h1 {
+  @import url(https://fonts.googleapis.com/css?family=Cabin+Condensed);
+
+body,html{margin:0;padding:0;height:100%;}
+body{
+  background: #f1f1f1;
+  background-size:cover;
+  font-family: 'Cabin Condensed', sans-serif;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+svg{font-weight:bold;max-width:300px;height:100%;}
+}
+
+
+
+#back-button,
+#vrSettingsButton,
+#contentManagerButton,
+#wheelbaseSettingsButton,
+#TuningexplainedButton{
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  color: #000;
+  background: #fff;
+  line-height: 20px; /* Reduced line-height for smaller button size */
+  border-radius: 25px; /* Reduced border-radius */
+  padding: 10px 15px; /* Adjusted padding to make the button smaller */
+  font-size: 16px; /* Reduced font-size for a more compact look */
+  font-weight: 600;
+  box-shadow: rgb(255, 198, 0) -2px -2px 0px 2px, 
+              rgb(246, 84, 174) 0px 0px 0px 4px, 
+              rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+  transition: all 0.2s;
+}
+
+button:hover {
+  box-shadow: rgb(246, 84, 174) -2px -2px 0px 2px, 
+              rgb(255, 198, 0) 0px 0px 0px 4px, 
+              rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+  transform: scale(1.05); /* Slightly larger on hover */
+}
+
+/* Full-screen mode (or larger displays) */
+@media (min-width: 1200px) {
+  button {
+      padding: 15px 25px; /* Slightly bigger for full-screen mode */
+      font-size: 18px; /* Increase font size for readability */
+  }
+}
+
+/* Non-full-screen or smaller displays */
+@media (max-width: 1199px) {
+  button {
+      padding: 10px 20px; /* Smaller padding for smaller displays */
+      font-size: 14px; /* Smaller font size */
+  }
 }

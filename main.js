@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron'); // Merged app and ipcMain
 
 function createWindow() {
   let win = new BrowserWindow({
@@ -30,4 +30,9 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+// Handle the exitApp signal from renderer
+ipcMain.on('exit-app', () => {
+  app.quit();  // This will completely close the app
 });
